@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E856A7A524F663FE00F4EE11"
-               BuildableName = "ModifyFIle.app"
-               BlueprintName = "ModifyFIle"
-               ReferencedContainer = "container:ModifyFIle.xcodeproj">
+               BuildableName = "FileReplace.app"
+               BlueprintName = "FileReplace"
+               ReferencedContainer = "container:FileReplace.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E856A7A524F663FE00F4EE11"
-            BuildableName = "ModifyFIle.app"
-            BlueprintName = "ModifyFIle"
-            ReferencedContainer = "container:ModifyFIle.xcodeproj">
+            BuildableName = "FileReplace.app"
+            BlueprintName = "FileReplace"
+            ReferencedContainer = "container:FileReplace.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E856A7A524F663FE00F4EE11"
-            BuildableName = "ModifyFIle.app"
-            BlueprintName = "ModifyFIle"
-            ReferencedContainer = "container:ModifyFIle.xcodeproj">
+            BuildableName = "FileReplace.app"
+            BlueprintName = "FileReplace"
+            ReferencedContainer = "container:FileReplace.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
