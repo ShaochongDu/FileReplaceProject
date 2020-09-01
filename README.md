@@ -1,13 +1,22 @@
-# 文件修改说明
+地址：[替换工具](https://github.com/ShaochongDu/FileReplaceProject.git)
 
 该工程主要方便文件及文件内容替换，但mac中并未能修改文件夹名字，导致有些处理需手动操作
-![iOS 工程及文件内容替换工具](https://upload-images.jianshu.io/upload_images/1186277-05230b2160795aad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![iOS 工程及文件内容替换工具](https://upload-images.jianshu.io/upload_images/1186277-47f467470fc6fbf4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 替换普通文件及文件内容
 1. 选择所需处理的文件夹
-2. 选择处理的文件类型，若类型不在选项中，则不勾选，默认处理所有的类型
-3. 替换前字符串与替换后字符串个数必须相同，中间以英文逗号分隔
-4. 全文替换：类似常用的替换功能；单词前缀替换：分为三类 ① iOS中以英文点做分隔的单词替换，如 self.ansproperty，针对ans替换 ② iOS中的set方法替换，如 setAnsProperty，针对Ans替换 ③ 普通的单词前缀替换， 如ansProperty，针对ans替换
+2. 选择处理的文件类型
+  2.1 勾选已有类型
+  2.2 自定义文件类型，文件后缀名以英文逗号分隔
+3. 替换前后字符串填写
+替换前字符串与替换后字符串个数必须相同，中间以英文逗号分隔
+4. 替换类型
+   4.1 全文替换：类似常用的替换功能；
+   4.2 单词前缀替换：分为三类 
+   ① iOS中以英文点做分隔的单词替换，如 self.ansproperty，针对ans替换 
+   ② iOS中的set方法替换，如 setAnsProperty，针对Ans替换 
+   ③ 普通的单词前缀替换， 如ansProperty，针对ans替换
 5. 执行替换：即可异步执行
 6. 查看执行日志
 

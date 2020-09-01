@@ -1,0 +1,15 @@
+analysys张三
+
+分配唯一标识//  
+
+#import "xxxDemo.h" 
+
+xxxAgent.m.xxxtest.xxxAAAA.9089xxxAAAAA.xxxbbbbA.1.xxx000
+
+- (NSString *)xxxElementPosition:(NSIndexPath *)indexPath {
+   self.xxx_visual_viewType isEqualToString:@""]
+} 
+
+- (void)setxxxViewID:(NSString *)tencentShanhuViewID {
+	这是一个set方法
+}

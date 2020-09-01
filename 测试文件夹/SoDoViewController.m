@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, ReplaceType) {
     self.fileTypes = [NSMutableSet setWithObjects:@".h", @".m", @".json", @".xib", @".plist", @".pch", @".storyboard", @".txt", nil];
     
     // 默认替换对应关系
-    self.toBeReplacedStrTF.stringValue = @"Analysys,analysys,eguan,_ans,_ANS,ANS,Ans,ans";
+    self.toBeReplacedStrTF.stringValue = @"SoDo,analysys,eguan,_ans,_ANS,ANS,Ans,ans";
     self.replacedStrTF.stringValue = @"TencentShanhu,tencentShanhu,tencentShanhu,_tencentShanhu,_TencentShanhu,TencentShanhu,TencentShanhu,tencentShanhu";
     [self setReplacedRelated];
     
@@ -429,7 +429,7 @@ typedef NS_ENUM(NSInteger, ReplaceType) {
                                     usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
                 //            NSLog(@"%@", substring);
                 if ([substring containsString:@"."]) {
-                    // 1. 处理self.ansXXX 或 AnalysysAgent.m
+                    // 1. 处理self.ansXXX 或 SoDoAgent.m
                     NSArray *words = [substring componentsSeparatedByString:@"."];
                     NSUInteger curLocation = 0;//字符位置
                     for (int i = 0; i < words.count; i++) {

@@ -17,13 +17,8 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     
-//    NSString *path = [[NSBundle mainBundle] resourcePath];
-//    NSLog(@"-----%@------", path);
-//    
-//    NSString *filePath = @"/Users/shaochongdu/Desktop/易观/SourceTree/openSource-iOS/TencentShanhuSDK_SourceCode/";
-//    [self readFileWithPath:filePath];
     
-    [self textReplace];
+//    [self textReplace];
 }
 
 
@@ -32,8 +27,8 @@
 }
 
 - (void)textReplace {
-    NSString *str = @"#import @\"AnalysysDemo.h\" 易观分配唯一标识//  AnalysysAgent.m.Analysystest.AnalysysAAAA.9089AnalysysAAAAA.AnalysysbbbbA.1.Analysys000- (NSString *)AnalysysElementPosition:(NSIndexPath *)indexPath; [self.Analysys_visual_viewType isEqualToString:@""],- (void)setAnalysysViewID:(NSString *)tencentShanhuViewID";
-//        NSString *str = @"parseAnalysysPushInfo";
+//    NSString *str = @"#import @\"AnalysysDemo.h\" 易观分配唯一标识//  AnalysysAgent.m.Analysystest.AnalysysAAAA.9089AnalysysAAAAA.AnalysysbbbbA.1.Analysys000- (NSString *)AnalysysElementPosition:(NSIndexPath *)indexPath; [self.Analysys_visual_viewType isEqualToString:@""],- (void)setAnalysysViewID:(NSString *)tencentShanhuViewID";
+        NSString *str = @"#import \"AnalysysDemo.h\" 分配唯一标识";
         NSMutableString *result = [str mutableCopy];
         NSString *needReplaceStr = @"Analysys";
         NSString *replacedStr = @"TencentShanhu";
