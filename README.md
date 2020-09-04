@@ -1,6 +1,6 @@
 地址：[替换工具](https://github.com/ShaochongDu/FileReplaceProject.git)
 
-该工程主要方便文件及文件内容替换，但mac中并未能修改文件夹名字，导致有些处理需手动操作
+该工程主要方便文件及文件内容替换
 
 ![iOS 工程及文件内容替换工具](https://upload-images.jianshu.io/upload_images/1186277-df5f25db098d3e34.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
