@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.3"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -936,10 +936,12 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="allReplaceBtn" destination="CXx-Qf-w1G" id="g8s-gb-cYX"/>
                         <outlet property="customFileTypeBtn" destination="RF5-1h-81z" id="wrs-VU-5fO"/>
                         <outlet property="customFileTypeTF" destination="yZ0-V1-oSi" id="Q6c-tB-3U3"/>
                         <outlet property="filePathTextField" destination="Dfj-N8-R1Z" id="JeX-V0-fnX"/>
                         <outlet property="logTextView" destination="b6v-TQ-AgE" id="qdT-Ff-ASj"/>
+                        <outlet property="prefixReplaceBtn" destination="SDW-l5-tWa" id="4qL-CQ-foJ"/>
                         <outlet property="replaceBtn" destination="qr7-2Z-a2R" id="PY4-rJ-Apv"/>
                         <outlet property="replacedStrTF" destination="mpc-gf-4pa" id="MoM-Bf-xOw"/>
                         <outlet property="toBeReplacedStrTF" destination="OLA-mw-bfI" id="db9-5t-MbG"/>
