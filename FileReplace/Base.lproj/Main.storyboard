@@ -717,7 +717,7 @@
                                 </constraints>
                                 <buttonCell key="cell" type="push" title="选择文件夹" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="w9W-HH-t3F">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="openFileAction:" target="XfG-lQ-9wD" id="12S-X4-Cem"/>
@@ -729,7 +729,7 @@
                                     <constraint firstAttribute="height" constant="20" id="DWh-4S-B2V"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" placeholderString="文件路径" id="BkC-J8-2zS">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                     <color key="textColor" name="systemPinkColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -741,7 +741,7 @@
                                     <constraint firstAttribute="height" constant="16" id="F7y-uq-Y68"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="选择文件类型" id="EVn-42-KwN">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -779,7 +779,7 @@
                                     <constraint firstAttribute="height" constant="16" id="i6e-9e-xAG"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="替换前字符串" id="zJi-Df-u7c">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -791,7 +791,7 @@
                                     <constraint firstAttribute="height" constant="16" id="ZLc-CA-PQ7"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="替换后字符串" id="629-dC-5r3">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -802,7 +802,7 @@
                                     <constraint firstAttribute="height" constant="21" id="ECA-KX-VY1"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="多个以英文逗号分隔。必须与替换后个数相同。建议由复杂字符串到简单字符串" drawsBackground="YES" id="oi1-D4-wuo">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -813,7 +813,7 @@
                                     <constraint firstAttribute="height" constant="21" id="mS4-Ts-Qwe"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="多个以英文逗号分隔。必须与替换前个数相同。建议由复杂字符串到简单字符串" drawsBackground="YES" id="rvG-m3-sf7">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -824,12 +824,12 @@
                                     <constraint firstAttribute="width" constant="82" id="CiY-Tm-Y7V"/>
                                     <constraint firstAttribute="height" constant="21" id="THe-dP-TyQ"/>
                                 </constraints>
-                                <buttonCell key="cell" type="push" title="执行替换" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="eMZ-Ef-0Or">
+                                <buttonCell key="cell" type="push" title="查询文件" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="eMZ-Ef-0Or">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" size="13" name=".PingFangSC-Regular"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="replacedAction:" target="XfG-lQ-9wD" id="mzn-43-Vcc"/>
+                                    <action selector="queryAction:" target="XfG-lQ-9wD" id="UrE-xZ-zzf"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CXx-Qf-w1G">
@@ -840,10 +840,10 @@
                                 </constraints>
                                 <buttonCell key="cell" type="radio" title="全文替换" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="u9R-nQ-An0">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="allReplaceAction:" target="XfG-lQ-9wD" id="E4H-84-X59"/>
+                                    <action selector="selectAllReplaceAction:" target="XfG-lQ-9wD" id="sfd-DA-k9e"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SDW-l5-tWa">
@@ -854,10 +854,10 @@
                                 </constraints>
                                 <buttonCell key="cell" type="radio" title="单词前缀替换" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="ZSu-CD-h7X">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="prefixReplaceAction:" target="XfG-lQ-9wD" id="HsV-K2-S0j"/>
+                                    <action selector="selectPrefixReplaceAction:" target="XfG-lQ-9wD" id="RId-D7-bQo"/>
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8cj-4d-s1S">
@@ -867,7 +867,7 @@
                                     <constraint firstAttribute="width" constant="160" id="sxk-HD-E9k"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="clipping" placeholderString="不选择表示全部类型的文件" id="tpw-mV-fmr">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -880,7 +880,7 @@
                                 </constraints>
                                 <buttonCell key="cell" type="check" title="自定义文件类型" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Ok4-XC-h3v">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="customeFileTypeAction:" target="XfG-lQ-9wD" id="4FU-x7-n0N"/>
@@ -892,11 +892,39 @@
                                     <constraint firstAttribute="height" constant="21" id="27a-B9-pxB"/>
                                 </constraints>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="多个以英文逗号分隔，如：.txt,.java" drawsBackground="YES" id="2Eg-Kp-nDm">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="label" size="13"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nD6-QN-DuA">
+                                <rect key="frame" x="113" y="353" width="94" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="JDh-2o-KNs"/>
+                                    <constraint firstAttribute="width" constant="82" id="RNp-0P-BFR"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="执行操作" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9Hv-ad-6g6">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="label" size="13"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="excuteAction:" target="XfG-lQ-9wD" id="ToY-ex-Xlq"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pG6-k4-PQO">
+                                <rect key="frame" x="257" y="387" width="100" height="23"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="06R-ZR-Urf"/>
+                                    <constraint firstAttribute="width" constant="97" id="9CQ-yS-ZA3"/>
+                                </constraints>
+                                <buttonCell key="cell" type="radio" title="文件删除" bezelStyle="regularSquare" imagePosition="left" inset="2" id="hBI-N1-8jB">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="label" size="13"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="selectDeleteFileAction:" target="XfG-lQ-9wD" id="Pzi-RF-DJN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="CXx-Qf-w1G" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="19" id="1yw-SN-NRQ"/>
@@ -910,6 +938,7 @@
                             <constraint firstItem="yZ0-V1-oSi" firstAttribute="top" secondItem="8cj-4d-s1S" secondAttribute="bottom" constant="36" id="CNN-lQ-QBZ"/>
                             <constraint firstItem="bnz-nv-Jhl" firstAttribute="top" secondItem="RF5-1h-81z" secondAttribute="bottom" constant="16" id="CNS-d2-PMm"/>
                             <constraint firstItem="8cj-4d-s1S" firstAttribute="leading" secondItem="Gef-Mw-z8k" secondAttribute="trailing" constant="19" id="CkZ-cW-zo4"/>
+                            <constraint firstItem="nD6-QN-DuA" firstAttribute="leading" secondItem="qr7-2Z-a2R" secondAttribute="trailing" constant="16" id="CyQ-cV-4tq"/>
                             <constraint firstItem="SDW-l5-tWa" firstAttribute="top" secondItem="mpc-gf-4pa" secondAttribute="bottom" constant="4" id="Ebt-r3-pPM"/>
                             <constraint firstItem="Gef-Mw-z8k" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="FHz-a7-MYw"/>
                             <constraint firstItem="CXx-Qf-w1G" firstAttribute="top" secondItem="mpc-gf-4pa" secondAttribute="bottom" constant="4" id="FJp-Cb-ngX"/>
@@ -922,11 +951,14 @@
                             <constraint firstItem="qr7-2Z-a2R" firstAttribute="top" secondItem="CXx-Qf-w1G" secondAttribute="bottom" constant="7" id="TtX-bF-TjY"/>
                             <constraint firstAttribute="trailing" secondItem="yZ0-V1-oSi" secondAttribute="trailing" constant="20" id="WG3-5i-dcw"/>
                             <constraint firstItem="OLA-mw-bfI" firstAttribute="top" secondItem="8cj-4d-s1S" secondAttribute="bottom" constant="67" id="Yre-yp-XXm"/>
+                            <constraint firstItem="pG6-k4-PQO" firstAttribute="top" secondItem="mpc-gf-4pa" secondAttribute="bottom" constant="6" id="aG1-y7-3ce"/>
+                            <constraint firstItem="pG6-k4-PQO" firstAttribute="leading" secondItem="SDW-l5-tWa" secondAttribute="trailing" constant="20" id="cR9-c7-S25"/>
                             <constraint firstItem="yZ0-V1-oSi" firstAttribute="leading" secondItem="RF5-1h-81z" secondAttribute="trailing" constant="15" id="dhu-RZ-F62"/>
                             <constraint firstItem="Gef-Mw-z8k" firstAttribute="top" secondItem="jsj-IR-8zP" secondAttribute="bottom" constant="6" id="fb3-g4-gxu"/>
                             <constraint firstItem="SDW-l5-tWa" firstAttribute="leading" secondItem="CXx-Qf-w1G" secondAttribute="trailing" constant="15" id="ffq-ro-ORN"/>
                             <constraint firstItem="6y5-xH-b1C" firstAttribute="top" secondItem="qr7-2Z-a2R" secondAttribute="bottom" constant="10" id="gJr-UP-ReS"/>
                             <constraint firstAttribute="trailing" secondItem="Dfj-N8-R1Z" secondAttribute="trailing" constant="19" id="hhV-eA-y67"/>
+                            <constraint firstItem="nD6-QN-DuA" firstAttribute="top" secondItem="SDW-l5-tWa" secondAttribute="bottom" constant="7" id="jzT-yM-X8h"/>
                             <constraint firstAttribute="trailing" secondItem="6y5-xH-b1C" secondAttribute="trailing" constant="19" id="nfy-rS-li5"/>
                             <constraint firstItem="jsj-IR-8zP" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="22" id="rUp-Fd-icc"/>
                             <constraint firstItem="Dfj-N8-R1Z" firstAttribute="leading" secondItem="jsj-IR-8zP" secondAttribute="trailing" constant="3" id="sNq-5b-XFa"/>
@@ -936,13 +968,15 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="allReplaceBtn" destination="CXx-Qf-w1G" id="g8s-gb-cYX"/>
+                        <outlet property="allReplaceRadioBtn" destination="CXx-Qf-w1G" id="g8s-gb-cYX"/>
                         <outlet property="customFileTypeBtn" destination="RF5-1h-81z" id="wrs-VU-5fO"/>
                         <outlet property="customFileTypeTF" destination="yZ0-V1-oSi" id="Q6c-tB-3U3"/>
+                        <outlet property="excuteBtn" destination="nD6-QN-DuA" id="6zm-f8-Ms8"/>
+                        <outlet property="fileDeleteRadioBtn" destination="pG6-k4-PQO" id="P6A-I2-C94"/>
                         <outlet property="filePathTextField" destination="Dfj-N8-R1Z" id="JeX-V0-fnX"/>
                         <outlet property="logTextView" destination="b6v-TQ-AgE" id="qdT-Ff-ASj"/>
-                        <outlet property="prefixReplaceBtn" destination="SDW-l5-tWa" id="4qL-CQ-foJ"/>
-                        <outlet property="replaceBtn" destination="qr7-2Z-a2R" id="PY4-rJ-Apv"/>
+                        <outlet property="prefixReplaceRadioBtn" destination="SDW-l5-tWa" id="4qL-CQ-foJ"/>
+                        <outlet property="quertyBtn" destination="qr7-2Z-a2R" id="57t-Lq-xIb"/>
                         <outlet property="replacedStrTF" destination="mpc-gf-4pa" id="MoM-Bf-xOw"/>
                         <outlet property="toBeReplacedStrTF" destination="OLA-mw-bfI" id="db9-5t-MbG"/>
                     </connections>

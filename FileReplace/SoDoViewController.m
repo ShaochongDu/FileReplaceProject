@@ -10,9 +10,17 @@
 
 #import "NSArray+SoDoUtils.h"
 
-typedef NS_ENUM(NSInteger, ReplaceType) {
-    ReplaceTypeAll, // 全文替换
-    ReplaceTypePrefix // 匹配单次开头
+// 文件操作类型
+typedef NS_ENUM(NSInteger, FileOperateType) {
+    FileOperateReplaceAll, // 全文替换
+    FileOperateReplacePrefix,   // 匹配单次开头
+    FileOperateDelete // 文件删除
+};
+
+// 执行类型
+typedef NS_ENUM(NSInteger, ExcuteType) {
+    ExcuteTypeQuery, // 查询
+    ExcuteTypeAction //  执行
 };
 
 static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
@@ -27,25 +35,30 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
 @property (weak) IBOutlet NSTextField *toBeReplacedStrTF;//替换前字符串输入框
 @property (weak) IBOutlet NSTextField *replacedStrTF;//替换后字符串输入框
 
-// 文件替换类型选择
-@property (nonatomic, assign) ReplaceType replaceType;
+@property (weak) IBOutlet NSButton *allReplaceRadioBtn;//全文替换
+@property (weak) IBOutlet NSButton *prefixReplaceRadioBtn;//单词前缀替换
+@property (weak) IBOutlet NSButton *fileDeleteRadioBtn;//文件删除
 
-@property (weak) IBOutlet NSButton *replaceBtn;//执行替换按钮
+
+@property (weak) IBOutlet NSButton *quertyBtn;//执行替换按钮
+@property (weak) IBOutlet NSButton *excuteBtn;//执行删除按钮
 
 @property (unsafe_unretained) IBOutlet NSTextView *logTextView;//日志展示框
 
 
 @property (nonatomic, copy) NSString *selectedPath;//当前选中文件路径
+@property (nonatomic, strong) NSArray *defaultFileType; // 处理文件类型的CheckBox类型
 @property (nonatomic, strong) NSMutableSet *fileTypes;   //  勾选或自定义 处理的文件类型
 @property (nonatomic, strong) NSView *checkBoxBgView;   // checkbox背景view
 @property (nonatomic, strong) NSMutableArray *replacedDataArray;//替换文件对应关系
 
-@property (weak) IBOutlet NSButton *allReplaceBtn;
-@property (weak) IBOutlet NSButton *prefixReplaceBtn;
-
+@property (nonatomic, assign) FileOperateType operateType;//文件操作类型
+@property (nonatomic, assign) ExcuteType excuteType;//查询/执行
 
 @property (nonatomic, assign) NSInteger fileFolderCount;//处理文件夹个数
 @property (nonatomic, assign) NSInteger fileCount;//处理总文件个数
+
+@property (nonatomic, copy) NSString *logText;   // 日志
 
 @end
 
@@ -55,6 +68,7 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
     [super viewWillAppear];
     self.view.window.restorable = NO;
     [self.view.window setContentSize:NSMakeSize(800, 600)];
+    self.title = @"文件工具";
 }
 
 
@@ -63,10 +77,15 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
     
     self.fileFolderCount = 0;
     self.fileCount = 0;
-    self.replaceType = ReplaceTypeAll;
+    self.operateType = FileOperateReplaceAll;
+    self.excuteType = ExcuteTypeQuery;
+    
+    self.defaultFileType = @[@"全部勾选",@".h", @".m", @".json", @".xib", @".plist", @".pch", @".storyboard", @".txt", @".md"];
     
     // 默认替换文件类型全部选择
-    self.fileTypes = [NSMutableSet setWithObjects:@".h", @".m", @".json", @".xib", @".plist", @".pch", @".storyboard", @".txt", nil];
+    NSMutableArray *fileTypes = [NSMutableArray arrayWithArray:self.defaultFileType];
+    [fileTypes removeObjectAtIndex:0];
+    self.fileTypes = [NSMutableSet setWithArray:fileTypes];
     
     // 默认替换对应关系
     self.toBeReplacedStrTF.stringValue = @"Analysys,analysys,eguan,_ans,_ANS,ANS,Ans,ans";
@@ -87,17 +106,15 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
 
 /// 创建CheckBox
 - (void)createCheckBox {
-    NSArray *fileTypes = @[@"全部勾选",@".h", @".m", @".json", @".xib", @".plist", @".pch", @".storyboard", @".txt"];
-    
     self.checkBoxBgView = [[NSView alloc] initWithFrame:CGRectMake(18, 505, 800-18*2, 30)];
-//    self.checkBoxBgView.wantsLayer = true;
-//    self.checkBoxBgView.layer.backgroundColor = NSColor.blueColor.CGColor;
+    //    self.checkBoxBgView.wantsLayer = true;
+    //    self.checkBoxBgView.layer.backgroundColor = NSColor.blueColor.CGColor;
     [self.view addSubview:self.checkBoxBgView];
     
     NSButton *lastBtn;
     CGFloat checkBoxWidth = 30;
-    for (int i = 0; i < fileTypes.count; i++) {
-        NSButton *btn = [NSButton buttonWithTitle:fileTypes[i] target:self action:@selector(checkBoxAction:)];
+    for (int i = 0; i < self.defaultFileType.count; i++) {
+        NSButton *btn = [NSButton buttonWithTitle:self.defaultFileType[i] target:self action:@selector(checkBoxAction:)];
         [btn setButtonType:NSButtonTypeSwitch];
         btn.tag = CHECKBOX_DEFAULT_TAG+i;
         btn.state = NSControlStateValueOn;
@@ -140,10 +157,10 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     panel.canChooseFiles = YES ;
     panel.canChooseDirectories = YES;
-//    panel.allowsMultipleSelection = YES;
+    //    panel.allowsMultipleSelection = YES;
     [panel beginWithCompletionHandler:^(NSModalResponse result) {
         if (result == NSModalResponseOK) {
-            self.logTextView.string = @"";
+            //            self.logTextView.string = @"";
             self.selectedPath = [panel URLs].firstObject.path;
             self.filePathTextField.stringValue = self.selectedPath;
         }
@@ -197,28 +214,31 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
 }
 
 // 全文替换
-- (IBAction)allReplaceAction:(NSButton *)sender {
-    self.prefixReplaceBtn.state = NSControlStateValueOff;
-    self.replaceType = ReplaceTypeAll;
+- (IBAction)selectAllReplaceAction:(NSButton *)sender {
+    self.prefixReplaceRadioBtn.state = NSControlStateValueOff;
+    self.fileDeleteRadioBtn.state = NSControlStateValueOff;
+    self.operateType = FileOperateReplaceAll;
 }
 
 // 单词前缀替换
-- (IBAction)prefixReplaceAction:(NSButton *)sender {
-    self.allReplaceBtn.state = NSControlStateValueOff;
-    self.replaceType = ReplaceTypePrefix;
+- (IBAction)selectPrefixReplaceAction:(NSButton *)sender {
+    self.allReplaceRadioBtn.state = NSControlStateValueOff;
+    self.fileDeleteRadioBtn.state = NSControlStateValueOff;
+    self.operateType = FileOperateReplacePrefix;
+}
+
+- (IBAction)selectDeleteFileAction:(NSButton *)sender {
+    self.allReplaceRadioBtn.state = NSControlStateValueOff;
+    self.prefixReplaceRadioBtn.state = NSControlStateValueOff;
+    self.operateType = FileOperateDelete;
 }
 
 /// 执行替换操作
 /// @param sender btn
-- (IBAction)replacedAction:(NSButton *)sender {
-    if (self.selectedPath.length  == 0) {
-        [self showAlertString:@"请选择文件路径！！！"];
+- (IBAction)queryAction:(NSButton *)sender {
+    if (![self validOfParams]) {
         return;
     }
-    //    if (self.fileTypes.count == 0) {
-    //        [self showAlertString:@"请勾选文件类型！！！"];
-    //        return;
-    //    }
     
     NSArray *toBeReplacedArray = [self.toBeReplacedStrTF.stringValue componentsSeparatedByString:@","];
     NSArray *replacedArray = [self.replacedStrTF.stringValue componentsSeparatedByString:@","];
@@ -234,73 +254,101 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
     //  处理替换文本对应关系
     [self setReplacedRelated];
     
+    self.excuteType = ExcuteTypeQuery;
+    
+    [self excuteFileAction];
+}
+
+
+/// 执行已选择操作
+/// @param sender btn
+- (IBAction)excuteAction:(NSButton *)sender {
+    if (![self validOfParams]) {
+        return;
+    }
+    
+    self.excuteType = ExcuteTypeAction;
+    
+    NSAlert * alert = [[NSAlert alloc]init];
+    alert.messageText = @"Tips";
+    alert.alertStyle = NSAlertStyleInformational;
+    [alert addButtonWithTitle:@"确定"];
+    [alert addButtonWithTitle:@"取消"];
+    [alert setInformativeText:@"是否确认执行该操作"];
+    [alert beginSheetModalForWindow:[self.view window] completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSAlertFirstButtonReturn) {
+            [self excuteFileAction];
+        }
+    }];
+}
+
+#pragma mark - 操作
+
+/// 执行文件替换或删除操作
+- (void)excuteFileAction {
+    self.fileFolderCount = 0;
+    self.fileCount = 0;
+    self.logText = @"";
+    self.logTextView.string = @"";
+    
+    if (self.excuteType == ExcuteTypeQuery) {
+        self.excuteBtn.enabled = NO;
+    } else {
+        self.quertyBtn.enabled = NO;
+    }
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSDate *startTime = [NSDate date];
+        [self appendTextViewString:@"*************************************************************"];
+        NSString *typeString = self.excuteType == ExcuteTypeQuery ? @"查询" : @"执行";
+        [self appendTextViewString:[NSString stringWithFormat:@"******************* 开始%@已选择文件 *****************", typeString]];
+        [self appendTextViewString:@"*************************************************************"];
+        
+        [self dealFileWithPath:self.selectedPath operateType:self.operateType];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.excuteBtn.enabled = YES;
+            self.quertyBtn.enabled = YES;
+        });
+        
+        [self appendTextViewString:@"\n\n*************************************************************"];
+        [self appendTextViewString:[NSString stringWithFormat:@"******************* 所有文件%@完成 *****************", typeString]];
+        NSString *recordString = [NSString stringWithFormat:@"******** 文件夹个数：%ld 文件个数：%ld **************", self.fileFolderCount, self.fileCount];
+        [self appendTextViewString:recordString];
+        [self appendTextViewString:@"*************************************************************\n\n"];
+        
+        [self appendTextViewString:[NSString stringWithFormat:@"*******************执行耗时 %.1f 秒*******************\n\n", -[startTime timeIntervalSinceNow]]];
+        
+        [self refreshLogTextView];
+    });
+}
+
+/// 基础参数检查
+- (BOOL)validOfParams {
+    if (self.selectedPath.length  == 0) {
+        [self showAlertString:@"请选择文件路径！！！"];
+        return NO;
+    }
+    //    if (self.fileTypes.count == 0) {
+    //        [self showAlertString:@"请勾选文件类型！！！"];
+    //        return NO;
+    //    }
+    
     //  文件类型
     if (self.customFileTypeBtn.state == NSControlStateValueOn) {
         if (self.customFileTypeTF.stringValue.length > 0) {
             self.fileTypes = [NSMutableSet setWithArray:[self.customFileTypeTF.stringValue componentsSeparatedByString:@","]];
         } else {
-            //            self.fileTypes = [NSMutableSet set];
             [self showAlertString:@"请填写自定义文件类型！"];
-            return;
+            return NO;
         }
         NSLog(@"自定义文件类型:%@", self.fileTypes);
     }
-    
-    self.fileFolderCount = 0;
-    self.fileCount = 0;
-    self.logTextView.string = @"";
-    
-    self.replaceBtn.enabled = NO;
-    self.replaceBtn.title = @"正在执行";
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSDate *startTime = [NSDate date];
-        [self appendTextViewString:@"*************************************************************"];
-        [self appendTextViewString:@"******************* 开始替换已选择文件 *****************"];
-        [self appendTextViewString:@"*************************************************************"];
-        
-        [self readFileWithPath:self.selectedPath];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.replaceBtn.enabled = YES;
-            self.replaceBtn.title = @"执行替换";
-            [self appendTextViewString:[NSString stringWithFormat:@"*******************执行耗时 %f 秒*******************\n\n", -[startTime timeIntervalSinceNow]]];
-        });
-        
-        [self appendTextViewString:@"\n\n*************************************************************"];
-        [self appendTextViewString:@"****************** 所有文件均已处理完成 ****************"];
-        NSString *recordString = [NSString stringWithFormat:@"******** 文件夹个数：%ld 文件个数：%ld ***************", self.fileFolderCount, self.fileCount];
-        [self appendTextViewString:recordString];
-        [self appendTextViewString:@"*************************************************************\n\n"];
-    });
-    
+    return YES;
 }
-
-- (void)deleteFileWithPath:(NSString *)filePath {
-    //    NSArray *fileArray = [fileManager subpathsAtPath:filePath];
-    //    NSLog(@"当前目录（%@）下文件--%@", filePath, fileArray)
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    //    NSArray *fileArray = [fileManager subpathsAtPath:filePath];
-    NSEnumerator* chileFilesEnumerator = [[fileManager subpathsAtPath:filePath]objectEnumerator];
-    NSString *fileName;
-    NSString *fileFolder = [self fileFolderWithPath:filePath];
-    while ((fileName = [chileFilesEnumerator nextObject]) !=nil) {
-        NSError *error;
-        NSString *subfilePath = [fileFolder stringByAppendingPathComponent:fileName];
-        BOOL result = [fileManager removeItemAtPath:subfilePath error:&error];
-        if (result && !error) {
-            NSLog(@"1");
-        } else {
-            NSLog(@"%@", error);
-        }
-    }
-}
-
-#pragma mark - 操作
-
 
 /// 读取文件
 /// @param filePath 路径
-- (void)readFileWithPath:(NSString *)filePath {
+- (void)dealFileWithPath:(NSString *)filePath operateType:(FileOperateType)operateType {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL isDirectory = NO; // 是否文件夹
     BOOL isPathExists = [fileManager fileExistsAtPath:filePath isDirectory:&isDirectory];
@@ -312,9 +360,14 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
             [self appendTextViewString:logString];
             
             /** --选中文件夹不能重命名-- */
-            if (![filePath isEqualToString:self.selectedPath]) {
-                //  子文件夹重命名
-                filePath = [self renameFile:filePath];
+            if (![filePath isEqualToString:self.selectedPath] &&
+                (operateType == FileOperateReplaceAll || operateType == FileOperateReplacePrefix)) {
+                if (self.excuteType == ExcuteTypeQuery) {
+                    [self appendTextViewString:[NSString stringWithFormat:@"----  当前文件夹 - %@ ---- ", [self fileNameWithPath:filePath]]];
+                } else {
+                    //  子文件夹重命名
+                    filePath = [self renameFile:filePath];
+                }
             }
             
             //  子文件夹
@@ -324,19 +377,57 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
             if (error == nil) {
                 for (NSString *str in fileArray) {
                     subPath  = [filePath stringByAppendingPathComponent:str];
-                    [self readFileWithPath:subPath];
+                    [self dealFileWithPath:subPath operateType:operateType];
                 }
             }
         } else {
             if ([self fileShowModify:filePath]) {
-                // 文件后缀匹配
-                NSString *renamedFilePath = [self renameFile:filePath];
-                [self readFileContentWithFilePath:renamedFilePath];
+                self.fileCount++;
+                switch (operateType) {
+                    case FileOperateReplaceAll:
+                    case FileOperateReplacePrefix:
+                        [self replaceFileWithPath:filePath];
+                        break;
+                    case FileOperateDelete:
+                        [self deleteFileWithPath:filePath];
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     } else {
         NSLog(@"路径(%@)不存在!", filePath);
     }
+}
+
+/// 文件替换操作
+/// @param filePath 文件路径
+- (void)replaceFileWithPath:(NSString *)filePath {
+    if (self.excuteType == ExcuteTypeQuery) {
+        [self appendTextViewString:[NSString stringWithFormat:@"------  当前文件 - %@ ------ ", [self fileNameWithPath:filePath]]];
+        return;
+    }
+    // 文件后缀匹配
+    NSString *renamedFilePath = [self renameFile:filePath];
+    [self readFileContentWithFilePath:renamedFilePath];
+}
+
+- (void)deleteFileWithPath:(NSString *)filePath {
+    if (self.excuteType == ExcuteTypeQuery) {
+        [self appendTextViewString:[NSString stringWithFormat:@"----- 当前文件 - %@ -----", [self fileNameWithPath:filePath]]];
+        return;
+    }
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    BOOL result = [fileManager removeItemAtPath:filePath error:&error];
+    NSString *logString;
+    if (error || !result) {
+        logString = [NSString stringWithFormat:@"----- 删除失败! %@ -----", error];
+    } else {
+        logString = [NSString stringWithFormat:@"----- 文件删除完成 - %@ -----", [self fileNameWithPath:filePath]];
+    }
+    [self appendTextViewString:logString];
 }
 
 /// 获取文件名
@@ -386,8 +477,6 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
     //    NSString *logString = [NSString stringWithFormat:@"------ 开始处理文件%@...... ", fileName];
     //    [self appendTextViewString:logString];
     
-    self.fileCount++;
-    
     NSString *originalContent = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
     NSString *content = [self replaceContent:originalContent];
     
@@ -423,14 +512,13 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
 /// 根据字符串对应关系替换文本内容
 /// @param content 文本
 - (NSString *)replaceContent:(NSString *)content {
-    
     NSMutableString *result = [content mutableCopy];
     
     for (NSDictionary *dic in self.replacedDataArray) {
         NSString *needReplaceStr = dic.allKeys.firstObject;//需要替换的字符
         NSString *replacedStr = dic.allValues.firstObject;//替换后字符
         
-        if (self.replaceType == ReplaceTypeAll) {
+        if (self.operateType == FileOperateReplaceAll) {
             // 1. 全部替换，不区分在开始、中间或结束位置
             content = [content stringByReplacingOccurrencesOfString:needReplaceStr withString:replacedStr];
             result = [content mutableCopy];
@@ -502,15 +590,28 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
     }
 }
 
+static NSTimeInterval lastTimeInterval;
 /// 日志追加
 /// @param text 文本
 - (void)appendTextViewString:(NSString *)text {
+    self.logText = [NSString stringWithFormat:@"%@", self.logText.length > 0 ? [NSString stringWithFormat:@"%@\n%@", self.logText, text] : text];
+    
+    if ([[NSDate date] timeIntervalSince1970] - lastTimeInterval < 1) {
+        return;
+    }
+    
+    [self refreshLogTextView];
+    
+    lastTimeInterval = [[NSDate date] timeIntervalSince1970];
+}
+
+/// 刷新日志显示
+- (void)refreshLogTextView {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.logTextView.string = [NSString stringWithFormat:@"%@", self.logTextView.string.length > 0 ? [NSString stringWithFormat:@"%@\n%@", self.logTextView.string, text] : text];
+        self.logTextView.string = self.logText;
         
         [self.logTextView scrollRangeToVisible:NSMakeRange(self.logTextView.string.length, 1)];
     });
 }
-
 
 @end
