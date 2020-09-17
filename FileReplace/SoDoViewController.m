@@ -157,6 +157,7 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     panel.canChooseFiles = YES ;
     panel.canChooseDirectories = YES;
+    panel.showsHiddenFiles = YES;
     //    panel.allowsMultipleSelection = YES;
     [panel beginWithCompletionHandler:^(NSModalResponse result) {
         if (result == NSModalResponseOK) {
@@ -240,19 +241,21 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
         return;
     }
     
-    NSArray *toBeReplacedArray = [self.toBeReplacedStrTF.stringValue componentsSeparatedByString:@","];
-    NSArray *replacedArray = [self.replacedStrTF.stringValue componentsSeparatedByString:@","];
-    if (self.toBeReplacedStrTF.stringValue.length == 0 ||
-        self.replacedStrTF.stringValue.length == 0 ||
-        toBeReplacedArray.count == 0 ||
-        replacedArray.count == 0 ||
-        toBeReplacedArray.count != replacedArray.count) {
-        [self showAlertString:@"替换前字符串必须与替换后字符串个数相同，且不能为空。若为多个则以英文逗号分隔！"];
-        return;
+    if (self.operateType == FileOperateReplacePrefix || self.operateType == FileOperateReplaceAll) {
+        NSArray *toBeReplacedArray = [self.toBeReplacedStrTF.stringValue componentsSeparatedByString:@","];
+        NSArray *replacedArray = [self.replacedStrTF.stringValue componentsSeparatedByString:@","];
+        if (self.toBeReplacedStrTF.stringValue.length == 0 ||
+            self.replacedStrTF.stringValue.length == 0 ||
+            toBeReplacedArray.count == 0 ||
+            replacedArray.count == 0 ||
+            toBeReplacedArray.count != replacedArray.count) {
+            [self showAlertString:@"替换前字符串必须与替换后字符串个数相同，且不能为空。若为多个则以英文逗号分隔！"];
+            return;
+        }
+        
+        //  处理替换文本对应关系
+        [self setReplacedRelated];
     }
-    
-    //  处理替换文本对应关系
-    [self setReplacedRelated];
     
     self.excuteType = ExcuteTypeQuery;
     
@@ -346,6 +349,7 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
     return YES;
 }
 
+//double fileSize = 0;
 /// 读取文件
 /// @param filePath 路径
 - (void)dealFileWithPath:(NSString *)filePath operateType:(FileOperateType)operateType {
@@ -382,6 +386,9 @@ static const NSInteger CHECKBOX_DEFAULT_TAG = 1000;
             }
         } else {
             if ([self fileShowModify:filePath]) {
+//                CGFloat sigleFileSize = [fileManager attributesOfItemAtPath:filePath error:nil].fileSize/(1024.0*1024.0);
+//                fileSize += sigleFileSize;
+//                NSLog(@"文件 %@ 大小：%.2f M，总大小：%.2f", filePath, sigleFileSize, fileSize);
                 self.fileCount++;
                 switch (operateType) {
                     case FileOperateReplaceAll:
